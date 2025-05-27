@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet("/digital-account/*/transaction")
@@ -71,7 +73,8 @@ public class TransactionServlet extends HttpServlet {
             throws SQLException {
         // Create transaction record
         DigitalAccountTransaction transaction = new DigitalAccountTransaction(
-            0, account.getId(), "DEPOSIT", amount, description, LocalDateTime.now()
+            0, account.getId(), "DEPOSIT", amount, description, 
+            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
         );
         transactionDao.create(transaction);
 
@@ -88,7 +91,8 @@ public class TransactionServlet extends HttpServlet {
 
         // Create transaction record
         DigitalAccountTransaction transaction = new DigitalAccountTransaction(
-            0, account.getId(), "WITHDRAW", -amount, description, LocalDateTime.now()
+            0, account.getId(), "WITHDRAW", -amount, description, 
+            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
         );
         transactionDao.create(transaction);
 
@@ -105,19 +109,20 @@ public class TransactionServlet extends HttpServlet {
         }
 
         DigitalAccount targetAccount = accountDao.search(targetAccountId);
+        Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
         // Create transaction records for both accounts
         DigitalAccountTransaction sourceTransaction = new DigitalAccountTransaction(
             0, sourceAccount.getId(), "TRANSFER_OUT", -amount, 
             "Transferência para conta " + targetAccountId + ": " + description,
-            LocalDateTime.now()
+            now
         );
         transactionDao.create(sourceTransaction);
 
         DigitalAccountTransaction targetTransaction = new DigitalAccountTransaction(
             0, targetAccountId, "TRANSFER_IN", amount,
             "Transferência da conta " + sourceAccount.getId() + ": " + description,
-            LocalDateTime.now()
+            now
         );
         transactionDao.create(targetTransaction);
 
