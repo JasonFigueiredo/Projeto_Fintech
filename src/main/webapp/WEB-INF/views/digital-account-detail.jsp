@@ -122,7 +122,7 @@ uri="jakarta.tags.fmt" %>
                           <tr>
                             <td>
                               <fmt:formatDate
-                                value="${transaction.date}"
+                                value="${transaction.transactionDate}"
                                 pattern="dd/MM/yyyy HH:mm"
                               />
                             </td>
@@ -161,7 +161,7 @@ uri="jakarta.tags.fmt" %>
             ></button>
           </div>
           <form
-            action="${pageContext.request.contextPath}/digital-account/${account.id}/transfer"
+            action="${pageContext.request.contextPath}/digital-account/${account.id}/transaction/transfer"
             method="post"
           >
             <div class="modal-body">
@@ -231,7 +231,7 @@ uri="jakarta.tags.fmt" %>
             ></button>
           </div>
           <form
-            action="${pageContext.request.contextPath}/digital-account/${account.id}/deposit"
+            action="${pageContext.request.contextPath}/digital-account/${account.id}/transaction/deposit"
             method="post"
           >
             <div class="modal-body">
@@ -288,7 +288,7 @@ uri="jakarta.tags.fmt" %>
             ></button>
           </div>
           <form
-            action="${pageContext.request.contextPath}/digital-account/${account.id}/withdraw"
+            action="${pageContext.request.contextPath}/digital-account/${account.id}/transaction/withdraw"
             method="post"
           >
             <div class="modal-body">
